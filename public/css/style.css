@@ -1,0 +1,723 @@
+/* Fondo y texto */
+html,
+body {
+  height: 100vh;
+  scrollbar-gutter: stable;
+  margin: 0;
+
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: #2e2e2e;
+  color: #ffffff;
+  margin: 0;
+}
+
+.nav-container {
+  padding: 1rem 2rem;
+  background: #202020f6;
+  position: fixed; /* navbar fija en la parte superior */
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 4000; /* asegurar que la barra esté por encima del overlay */
+}
+
+/* Contenedor principal de la app: ocupar el espacio restante sin forzar scroll */
+.app-main {
+  flex: 1 ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.main-index {
+  margin-top: 5rem; /* espacio para la navbar fija */
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem 1rem;
+}
+
+
+
+/* Sección Películas Recomendadas */
+.pelis-recomendadas {
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto 4rem auto;
+}
+.pelis-recomendadas h5 {
+  color: #fff;
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+}
+.pelis-recomendadas .row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+.peli {
+  max-width: 220px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.peli img {
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+}
+.peli img:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.6);
+}
+
+/* Móvil: mostrar recomendaciones en 2 columnas */
+@media (max-width: 576px) {
+  .pelis-recomendadas .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+  .pelis-recomendadas .peli {
+    flex: 0 0 calc(50% - 0.5rem);
+    max-width: calc(50% - 0.5rem);
+  }
+  .pelis-recomendadas .peli img {
+    height: 200px;
+    object-fit: cover;
+  }
+}
+
+
+.navbar-brand {
+  color: #e50914;
+  font-size: 1.5rem;
+}
+
+.navbar-brand:hover {
+  color: #b20710;
+  text-decoration: none;
+}
+
+/* Centrar verticalmente los elementos del navbar (marca y botón) */
+.nav-container .row {
+  display: flex;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  padding: 1rem;
+  margin: 0;
+  list-style: none;
+}
+
+
+
+ul li a {
+  text-decoration: none;
+  color: #d4d4d4;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+ul li a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #e50914;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+ul li a:hover::after {
+  transform: scaleX(1);
+}
+
+ul li a:hover {
+  color: #e50914;
+}
+
+/* MENÚ MÓVIL */
+@media (max-width: 991px) {
+
+  .main-index {
+    margin-top: 1rem; /* espacio para la navbar fija (reducido en móvil) */
+  }
+
+  .navbar {
+    position: relative;
+  }
+
+  .navbar-collapse {
+    position: absolute;
+    top: 100%; /* pegar justo debajo de la barra */
+    left: 0;
+    right: 0;
+    background: #202020f6;
+    margin: 0;
+    border-radius: 0 0 10px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0.4rem 0.6rem 0.75rem 0.6rem;
+    z-index: 1100;
+    transform-origin: top center;
+    transition: transform 180ms ease, opacity 180ms ease;
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  .navbar-toggler {
+    z-index: 2000; /* asegurar que el toggler siempre esté por encima */
+    border-radius: 8px;
+    pointer-events: auto;
+  }
+
+  .nav-link {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+
+  .nav-link::after {
+    display: none;
+  }
+
+  .navbar-nav {
+    gap: 0.75rem;
+  }
+
+  .navbar-nav .nav-item {
+    width: 100%;
+  }
+
+  .navbar-nav .nav-link {
+    width: 100%;
+    display: block;
+  }
+
+  .navbar-collapse .btn-netflix {
+    margin-top: 0.5rem;
+  }
+
+  /* cuando el collapse está abierto, evitar que su sombra cubra el toggler */
+  .navbar-collapse.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* separar items del navbar en escritorio */
+@media (min-width: 992px) {
+  
+  .navbar-nav {
+    display: flex; /* por si no está */
+    gap: 5rem; /* <-- aumenta/disminuye aquí */
+    align-items: center;
+    margin-left: 3rem;
+  }
+}
+
+/* Navbar tweaks: toggler visible on dark background and link colors */
+.navbar-dark .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.navbar .nav-link {
+  color: #d4d4d4;
+  transition: all 0.3s ease;
+}
+.navbar .nav-link:hover {
+  color: #e50914;
+}
+
+/* Overlay que oscurece la app cuando el navbar móvil está abierto */
+.nav-overlay {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  background: rgba(0, 0, 0, 0.821);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+  z-index: 1000; /* debajo de la navbar (nav-container z-index debe ser mayor) */
+}
+.nav-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Ensure collapse has padding on small screens */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    padding: 0.75rem 1rem;
+  }
+  .navbar-nav {
+    gap: 0.5rem;
+  }
+}
+
+/* selectors específicos no necesarios; usar el align-items en la fila */
+/* Contenedor del formulario: centrado vertical/horizontal */
+.container-centro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+/* Estilos para la vista de perfil */
+.profile-card {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+.avatar-wrap {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  cursor: pointer;
+  
+}
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.profile-details h6 {
+  color: #fff;
+  font-weight: 700;
+}
+.profile-actions .btn-netflix {
+  width: 100%;
+}
+
+
+.reviews-list .review-card {
+  /* Igualar estilo a la tarjeta de perfil: fondo oscuro, borde sutil y sombra */
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  color: #fff;
+}
+
+/* Contenedor principal de reseñas: mismo estilo que la tarjeta de perfil */
+.reviews-card {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  color: #fff;
+}
+
+.reviews-card .card-body { background: transparent; }
+.review-thumb {
+  width: 84px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+@media (max-width: 576px) {
+  .avatar-wrap { width: 110px; height: 110px; }
+  .review-thumb { width: 72px; height: 100px; }
+}
+
+
+
+/* Caja del buscador — flex para que gap funcione */
+.search-box {
+  max-width: 600px;
+  width: 100%;
+  display: flex; /* <- importante para gap */
+}
+
+/* Hacemos que la input-group se vea bien en oscuro */
+.input-group {
+  width: 100%;
+  box-shadow: none;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Input: fondo oscuro y texto claro */
+.input-group .form-control {
+  background: transparent;
+  color: #fff;
+  border: 0;
+  padding: 0.75rem 1rem;
+}
+
+.input-group .form-control::placeholder {
+  color: #bbbbbb; /* gris claro */
+  opacity: 1; /* para que no salga transparente */
+}
+
+/* Quitar sombra/borde azul al focus */
+.input-group .form-control:focus,
+.input-group .form-control:focus-visible {
+  box-shadow: none !important;
+  outline: none !important;
+  border: 0 !important;
+}
+
+/* Botón estilo Netflix */
+.btn-netflix {
+  background-color: #e50914 !important;
+  border-color: #e50914 !important;
+  color: white !important;
+  font-weight: 700;
+  padding: 0 1.2rem;
+}
+.btn-netflix:hover {
+  background-color: #b20710 !important;
+  border-color: #b20710 !important;
+}
+
+/* Tarjeta resultado en oscuro */
+.card.movie-card {
+  background: rgba(255, 255, 255, 0.03);
+  color: #fff;
+  border: 0;
+  max-width: 700px;
+  width: 100%;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+/* Poster para que no esté demasiado brillante */
+.movie-card img {
+  width: 100%;
+  height: auto;
+  object-fit: contain; /* mostrar la imagen completa sin recortarla */
+  display: block;
+  max-height: 500px; /* ajustar si necesitas más o menos altura */
+}
+
+/* Botón cerrar arriba-derecha */
+.movie-card .btn-close {
+  filter: brightness(0.9);
+}
+
+/* Texto pequeño en gris claro */
+.text-muted-light {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Mobile: hacer columna si es necesario */
+@media (max-width: 576px) {
+  .row.g-0 > .col-md-4,
+  .row.g-0 > .col-md-8 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  /* Evitar centrado vertical en móviles para que el contenido pueda hacer scroll
+     y no quede cortado si la tarjeta es más alta que la ventana */
+  .app-main {
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  .movie-card {
+    height: auto;
+    width: 100%;
+    max-width: 600px;
+    margin: 0.75rem 0;
+  }
+
+  .movie-card img {
+    height: auto;
+    max-height: 360px; /* límite en móvil para no romper el layout */
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 1rem auto;
+    width: 100%;
+  }
+}
+
+/* Estilos específicos para el formulario de login */
+
+.form-signin {
+  max-width: 600px;
+  padding: 2rem;
+  background: rgba(56, 56, 56, 0.922);
+  color: #fff;
+  border-radius: 0.5rem;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  z-index: 1; /* sobre el pseudo-elemento borroso */
+}
+
+.form-signin:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.form-signin form {
+  width: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+
+.form-signin h1 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Contenedor personalizado para inputs */
+.input-group-custom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Labels fuera de los inputs */
+.input-group-custom label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  margin-left: 0.25rem;
+  transition: color 0.3s ease;
+}
+
+.input-group-custom:focus-within label {
+  color: #e50914;
+}
+
+/* Inputs estilizados */
+.form-signin input {
+  padding: 0.875rem 0.75rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border-radius: 6px;
+}
+
+.form-signin input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.form-signin input:focus {
+  border-color: #e50914;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.01);
+  outline: none;
+}
+
+/* Botón estilizado */
+.form-signin button {
+  padding: 0.875rem;
+  font-size: 1.15rem;
+  background-color: #e50914;
+  border-color: #e50914;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+}
+
+.form-signin button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.form-signin button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.form-signin button:hover {
+  background-color: #b20710;
+  border-color: #b20710;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(229, 9, 20, 0.4);
+}
+
+.form-signin button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(229, 9, 20, 0.3);
+}
+
+.form-signin-link {
+  color: #e50914;
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-align: center;
+  display: block;
+  margin-top: 1rem;
+}
+
+/* Animación de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-signin {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+
+.peli img {
+  width: 100%;
+  max-width: 200px;
+  height: 100%;
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+}
+
+.peli img:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+  box-shadow: #464646 0px 4px 15px;
+}
+
+/* Modal general */
+.modal-content {
+  background-color: #1c1c1c; /* fondo oscuro */
+  color: #fff; /* texto blanco */
+  border-radius: 10px;
+}
+
+/* Encabezado del modal */
+.modal-header {
+  border-bottom: 1px solid #444;
+}
+
+.modal-header .btn-close {
+  filter: invert(1); /* hace el botón de cerrar visible en fondo oscuro */
+}
+
+/* Cuerpo del modal */
+.modal-body {
+  font-size: 0.95rem;
+}
+
+/* Póster dentro del modal */
+#modalPoster {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  margin-bottom: 1rem;
+}
+
+/* Lista de detalles */
+.modal-body ul {
+  padding-left: 1rem;
+}
+
+.modal-body li {
+  margin-bottom: 0.5rem;
+}
+
+/* Ajustes de modal en móvil: hacerla más pequeña y evitar que la navbar fija tape el botón cerrar */
+@media (max-width: 576px) {
+  /* Asegurar que la modal esté por encima de la navbar fija */
+  .modal {
+    z-index: 4500 !important;
+  }
+  .modal-backdrop {
+    z-index: 4400 !important;
+  }
+
+  /* Reducir ancho y separar del borde superior para que el navbar no la cubra */
+  .modal-dialog {
+    max-width: 92vw;
+    margin: 0.8rem auto;
+  }
+
+  /* Limitar altura total de la modal y hacer el body interno desplazable */
+  .modal-content {
+    max-height: calc(100vh - 5rem);
+    overflow: hidden;
+  }
+  .modal-body {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Mantener header y botón cerrar visibles dentro del modal */
+  .modal-header {
+    position: sticky;
+    top: 0;
+    z-index: 4600;
+    background: rgba(32,32,32,0.95);
+  }
+  .modal .btn-close {
+    z-index: 4700;
+  }
+}
+
+
+/* Responsive: en móviles, la imagen se centra encima del texto */
+@media (max-width: 768px) {
+  .modal-body .row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #modalPoster {
+    margin-bottom: 1rem;
+  }
+
+  .modal-body ul {
+    text-align: left;
+  }
+}
